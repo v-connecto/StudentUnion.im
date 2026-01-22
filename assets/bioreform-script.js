@@ -360,6 +360,158 @@
     }
 
     // ============================================
+    // Waitlist Modal Handler
+    // ============================================
+    const openModalBtn = document.getElementById('open-waitlist-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    const modalOverlay = document.getElementById('waitlist-modal');
+    const modalForm = document.getElementById('waitlist-modal-form');
+    const modalFormMessage = document.getElementById('modal-form-message');
+
+    // Open modal
+    if (openModalBtn && modalOverlay) {
+        openModalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Focus first input
+            const firstInput = modalForm.querySelector('input[type="email"]');
+            if (firstInput) {
+                setTimeout(() => firstInput.focus(), 100);
+            }
+        });
+    }
+
+    // Close modal function
+    function closeModal() {
+        if (modalOverlay) {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Reset form message
+            if (modalFormMessage) {
+                modalFormMessage.style.display = 'none';
+                modalFormMessage.className = 'form-message';
+            }
+        }
+    }
+
+    // Close on close button click
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+
+    // Close on overlay click (outside modal content)
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+    }
+
+    // Close on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Modal form submission
+    if (modalForm) {
+        modalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const emailInput = this.querySelector('#modal-email');
+            const userTypeInputs = this.querySelectorAll('input[name="userType"]');
+            const additionalInfoInput = this.querySelector('#modal-info');
+            const submitButton = this.querySelector('button[type="submit"]');
+
+            const email = emailInput.value.trim();
+            let userType = '';
+
+            // Get selected user type
+            userTypeInputs.forEach(input => {
+                if (input.checked) {
+                    userType = input.value;
+                }
+            });
+
+            const additionalInfo = additionalInfoInput.value.trim();
+
+            // Validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
+                showModalMessage('Please enter a valid email address', 'error');
+                return;
+            }
+
+            if (!userType) {
+                showModalMessage('Please select whether you are a student or business', 'error');
+                return;
+            }
+
+            // Disable submit button
+            submitButton.disabled = true;
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Submitting...';
+
+            // Prepare form data
+            const formData = {
+                email: email,
+                userType: userType,
+                additionalInfo: additionalInfo,
+                timestamp: new Date().toISOString()
+            };
+
+            // TODO: Replace with actual backend API call
+            // Example: fetch('/api/waitlist', { method: 'POST', body: JSON.stringify(formData) })
+
+            // Simulate API call
+            setTimeout(function() {
+                // Success
+                showModalMessage('🎉 You\'re on the list! We\'ll notify you when we relaunch.', 'success');
+
+                // Reset form
+                modalForm.reset();
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+
+                // Optional: Send to analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'waitlist_signup', {
+                        'event_category': 'engagement',
+                        'event_label': userType,
+                        'value': email
+                    });
+                }
+
+                console.log('Waitlist submission:', formData);
+
+                // Close modal after 2 seconds
+                setTimeout(closeModal, 2000);
+            }, 1000);
+        });
+    }
+
+    function showModalMessage(message, type) {
+        if (modalFormMessage) {
+            modalFormMessage.textContent = message;
+            modalFormMessage.className = 'form-message ' + type;
+            modalFormMessage.style.display = 'block';
+
+            // Hide error messages after 5 seconds, but keep success messages visible
+            if (type === 'error') {
+                setTimeout(function() {
+                    modalFormMessage.style.display = 'none';
+                }, 5000);
+            }
+        }
+    }
+
+    // ============================================
     // Initialize on Page Load
     // ============================================
     window.addEventListener('load', function() {
