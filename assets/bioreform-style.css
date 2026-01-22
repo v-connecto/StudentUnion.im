@@ -594,32 +594,32 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
     color: var(--secondary);
 }
 
-/* Process Grid (Section 03) */
+/* Process Grid (Section 03) - Compact 4-column layout */
 .process-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
 }
 
 .process-card {
-    padding: 2.5rem 2rem;
+    padding: 1.75rem 1.25rem;
     background: var(--white);
     border: 2px solid rgba(0, 0, 0, 0.05);
-    border-radius: 24px;
+    border-radius: 16px;
     text-align: center;
     transition: all var(--duration) var(--ease);
 }
 
 .process-card:hover {
     border-color: var(--primary);
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
 .process-icon {
-    width: 72px;
-    height: 72px;
-    margin: 0 auto 1.5rem;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -628,23 +628,48 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
     color: var(--secondary);
 }
 
+.process-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
 .process-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
 }
 
 .process-card p {
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--text-dark);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .process-detail {
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
     font-weight: 400;
     color: var(--text-gray);
-    line-height: 1.6;
+    line-height: 1.5;
+}
+
+/* Responsive: Stack on tablet */
+@media (max-width: 1024px) {
+    .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .process-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .process-card {
+        padding: 1.5rem 1rem;
+    }
 }
 
 /* Testimonials (Section 04) */
@@ -1002,7 +1027,151 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
     }
 }
 
-/* Modal Styles */
+/* Gallery Carousel Section */
+.media-gallery-section {
+    background: var(--cream);
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--text-gray);
+    font-size: 1.125rem;
+    margin-top: 0.5rem;
+    margin-bottom: 3rem;
+}
+
+.gallery-carousel-wrapper {
+    position: relative;
+    margin: 0 auto;
+    max-width: 1200px;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.gallery-carousel {
+    overflow: hidden;
+    position: relative;
+}
+
+.gallery-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-item {
+    min-width: 100%;
+    padding: 1rem;
+}
+
+.gallery-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--white);
+}
+
+.gallery-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-tag {
+    background: var(--primary);
+    color: var(--black);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.gallery-caption {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--white);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all var(--duration) var(--ease);
+    z-index: 10;
+}
+
+.gallery-nav:hover {
+    background: var(--primary);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-nav-prev {
+    left: 1rem;
+}
+
+.gallery-nav-next {
+    right: 1rem;
+}
+
+.gallery-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: all var(--duration) var(--ease);
+}
+
+.indicator:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.indicator.active {
+    background: var(--primary);
+    width: 32px;
+    border-radius: 6px;
+}
+
+/* Modal Styles - Aesthetic Redesign */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -1010,7 +1179,8 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
     z-index: 9999;
     padding: 1rem;
     overflow-y: auto;
@@ -1033,65 +1203,88 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
 }
 
 .modal-content {
-    background: var(--white);
-    max-width: 500px;
+    background: linear-gradient(135deg, #fffce9 0%, #ffffff 100%);
+    max-width: 520px;
     width: 100%;
-    border-radius: 16px;
-    padding: 2.5rem;
+    border-radius: 24px;
+    padding: 0;
     position: relative;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: slideUp 0.3s ease;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 204, 0, 0.2);
 }
 
 @keyframes slideUp {
     from {
-        transform: translateY(30px);
+        transform: translateY(40px) scale(0.95);
         opacity: 0;
     }
     to {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         opacity: 1;
     }
 }
 
 .modal-close {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: transparent;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: rgba(255, 255, 255, 0.9);
     border: none;
-    font-size: 2rem;
-    color: var(--gray);
+    color: var(--text-dark);
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: all var(--duration) var(--ease);
+    transition: all 0.2s ease;
     line-height: 1;
     padding: 0;
+    z-index: 10;
 }
 
 .modal-close:hover {
-    background: var(--cream);
+    background: var(--primary);
     color: var(--black);
     transform: rotate(90deg);
 }
 
+.modal-header {
+    text-align: center;
+    padding: 2.5rem 2rem 1.5rem;
+    background: linear-gradient(to bottom, rgba(255, 204, 0, 0.1), transparent);
+}
+
+.modal-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black);
+}
+
 .modal-title {
-    font-size: 1.75rem;
-    font-weight: 700;
+    font-size: 1.875rem;
+    font-weight: 800;
     color: var(--black);
     margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
 }
 
 .modal-subtitle {
     font-size: 1rem;
-    color: var(--gray);
-    margin-bottom: 2rem;
+    color: var(--text-gray);
     line-height: 1.6;
+}
+
+.waitlist-modal-form {
+    padding: 0 2rem 1.5rem;
 }
 
 .waitlist-modal-form .form-group {
@@ -1099,26 +1292,39 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
 }
 
 .waitlist-modal-form label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-weight: 600;
-    color: var(--black);
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 0.625rem;
+    font-size: 0.9375rem;
+}
+
+.waitlist-modal-form label svg {
+    opacity: 0.6;
 }
 
 .waitlist-modal-form .required {
     color: #e74c3c;
+    font-weight: 700;
+}
+
+.waitlist-modal-form .optional {
+    color: var(--text-gray);
+    font-weight: 400;
+    font-size: 0.875rem;
 }
 
 .waitlist-modal-form input[type="email"],
 .waitlist-modal-form textarea {
     width: 100%;
-    padding: 0.875rem 1rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    padding: 1rem 1.125rem;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
     font-size: 1rem;
     font-family: inherit;
-    transition: all var(--duration) var(--ease);
+    transition: all 0.2s ease;
     background: var(--white);
 }
 
@@ -1126,57 +1332,118 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
 .waitlist-modal-form textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.1);
+    box-shadow: 0 0 0 4px rgba(255, 204, 0, 0.15);
+    background: #fffef9;
 }
 
 .waitlist-modal-form textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 90px;
 }
 
 .radio-group {
-    display: flex;
-    gap: 1rem;
-    margin-top: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.875rem;
 }
 
 .radio-option {
+    position: relative;
+    cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    background: var(--white);
+    padding: 0;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    padding: 0.75rem 1.25rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    transition: all var(--duration) var(--ease);
-    flex: 1;
-    font-weight: 500;
 }
 
 .radio-option:hover {
     border-color: var(--primary);
-    background: var(--cream);
+    background: #fffef5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .radio-option input[type="radio"] {
-    width: 18px;
-    height: 18px;
-    margin: 0;
+    position: absolute;
+    opacity: 0;
     cursor: pointer;
-    accent-color: var(--primary);
 }
 
-.radio-option input[type="radio"]:checked + span {
+.radio-option input[type="radio"]:checked ~ .radio-content {
+    background: linear-gradient(135deg, #ffcc00 0%, #ffdb4d 100%);
     color: var(--black);
 }
 
-.radio-option input[type="radio"]:checked {
-    accent-color: var(--primary);
+.radio-option input[type="radio"]:checked ~ .radio-content .radio-title {
+    font-weight: 700;
+}
+
+.radio-option:has(input[type="radio"]:checked) {
+    border-color: var(--primary);
+    border-width: 2px;
+}
+
+.radio-content {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.25rem;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.radio-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.radio-desc {
+    font-size: 0.8125rem;
+    opacity: 0.8;
 }
 
 .btn-full {
     width: 100%;
+}
+
+.modal-submit {
     margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.0625rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #ffcc00 0%, #ffdb4d 100%);
+    transition: all 0.2s ease;
+}
+
+.modal-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 204, 0, 0.4);
+}
+
+.modal-submit svg {
+    transition: transform 0.2s ease;
+}
+
+.modal-submit:hover svg {
+    transform: translateX(4px);
+}
+
+.modal-footer {
+    text-align: center;
+    padding: 1.5rem 2rem 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal-footer p {
+    font-size: 0.875rem;
+    color: var(--text-gray);
+    margin: 0;
 }
 
 .form-message {

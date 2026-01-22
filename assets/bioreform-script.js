@@ -360,6 +360,85 @@
     }
 
     // ============================================
+    // Gallery Carousel Handler
+    // ============================================
+    const galleryTrack = document.getElementById('gallery-track');
+    const galleryPrev = document.getElementById('gallery-prev');
+    const galleryNext = document.getElementById('gallery-next');
+    const galleryIndicators = document.querySelectorAll('.indicator');
+
+    if (galleryTrack && galleryPrev && galleryNext) {
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.gallery-item').length;
+
+        function updateGallery() {
+            const offset = -currentSlide * 100;
+            galleryTrack.style.transform = `translateX(${offset}%)`;
+
+            // Update indicators
+            galleryIndicators.forEach((indicator, index) => {
+                if (index === currentSlide) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateGallery();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateGallery();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateGallery();
+        }
+
+        // Event listeners
+        galleryNext.addEventListener('click', nextSlide);
+        galleryPrev.addEventListener('click', prevSlide);
+
+        // Indicator click handlers
+        galleryIndicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto-advance every 5 seconds
+        let autoAdvance = setInterval(nextSlide, 5000);
+
+        // Pause auto-advance on hover
+        const galleryCarousel = document.getElementById('gallery-carousel');
+        if (galleryCarousel) {
+            galleryCarousel.addEventListener('mouseenter', () => {
+                clearInterval(autoAdvance);
+            });
+
+            galleryCarousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(nextSlide, 5000);
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                clearInterval(autoAdvance);
+                autoAdvance = setInterval(nextSlide, 5000);
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+                clearInterval(autoAdvance);
+                autoAdvance = setInterval(nextSlide, 5000);
+            }
+        });
+    }
+
+    // ============================================
     // Waitlist Modal Handler
     // ============================================
     const openModalBtn = document.getElementById('open-waitlist-modal');
