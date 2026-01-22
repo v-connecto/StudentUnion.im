@@ -476,18 +476,17 @@
             submitButton.disabled = true;
             const originalText = submitButton.textContent;
             submitButton.textContent = 'Submitting...';
-
             // Google Forms integration
             // Replace FORM_ID with your actual Google Form ID
             // Replace entry IDs with your actual form field IDs
-            const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/FORM_ID_PLACEHOLDER/formResponse';
+            const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdywkxrAo0wRznmJiTJr1Xa4ACT30z6XLZN_AJ4n5lw2rh0Gg/formResponse';
 
             // Create form data for Google Forms
             const formData = new FormData();
-            formData.append('entry.EMAIL_ENTRY_ID_PLACEHOLDER', email); // Email field
-            formData.append('entry.USERTYPE_ENTRY_ID_PLACEHOLDER', userType); // User type (student/business)
+            formData.append('entry.993444707', email); // Email field
+            formData.append('entry.1806846697', userType); // User type (student/business)
             if (additionalInfo) {
-                formData.append('entry.ADDITIONAL_INFO_ENTRY_ID_PLACEHOLDER', additionalInfo); // Optional info
+                formData.append('entry.1832679277', additionalInfo); // Optional info
             }
 
             // Submit to Google Forms
