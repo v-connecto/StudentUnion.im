@@ -19,8 +19,8 @@
     /* Typography */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-    /* Spacing (bioreform-style generous spacing) */
-    --section-padding: clamp(5rem, 12vw, 10rem);
+    /* Spacing (optimized spacing) */
+    --section-padding: clamp(3rem, 8vw, 6rem);
     --container-width: 1300px;
 
     /* Transitions */
@@ -1027,9 +1027,15 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
     }
 }
 
-/* Gallery Carousel Section */
+/* Gallery Carousel Section - Seamless Infinite Scroll */
 .media-gallery-section {
     background: var(--cream);
+}
+
+.container-full {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
 }
 
 .section-subtitle {
@@ -1040,36 +1046,51 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
     margin-bottom: 3rem;
 }
 
-.gallery-carousel-wrapper {
-    position: relative;
-    margin: 0 auto;
-    max-width: 1200px;
-    overflow: hidden;
-    border-radius: 24px;
-}
-
 .gallery-carousel {
     overflow: hidden;
     position: relative;
+    padding: 2rem 0;
 }
 
 .gallery-track {
     display: flex;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 2rem;
+    animation: gallery-scroll 40s linear infinite;
+    width: max-content;
+}
+
+@keyframes gallery-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.gallery-carousel:hover .gallery-track {
+    animation-play-state: paused;
 }
 
 .gallery-item {
-    min-width: 100%;
-    padding: 1rem;
+    flex-shrink: 0;
+    width: 400px;
 }
 
 .gallery-image-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 3;
     border-radius: 16px;
     overflow: hidden;
     background: var(--white);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image-wrapper {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 .gallery-image-wrapper img {
@@ -1085,10 +1106,10 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.8) 100%);
     display: flex;
     align-items: flex-end;
-    padding: 2rem;
+    padding: 1.5rem;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -1108,67 +1129,21 @@ h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
 
 .gallery-caption {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     font-weight: 500;
     color: var(--text-dark);
+    font-size: 0.9375rem;
 }
 
-.gallery-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--white);
-    border: none;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all var(--duration) var(--ease);
-    z-index: 10;
-}
+/* Responsive Gallery */
+@media (max-width: 768px) {
+    .gallery-item {
+        width: 300px;
+    }
 
-.gallery-nav:hover {
-    background: var(--primary);
-    transform: translateY(-50%) scale(1.1);
-}
-
-.gallery-nav-prev {
-    left: 1rem;
-}
-
-.gallery-nav-next {
-    right: 1rem;
-}
-
-.gallery-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 2rem;
-}
-
-.indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.2);
-    border: none;
-    cursor: pointer;
-    transition: all var(--duration) var(--ease);
-}
-
-.indicator:hover {
-    background: rgba(0, 0, 0, 0.4);
-}
-
-.indicator.active {
-    background: var(--primary);
-    width: 32px;
-    border-radius: 6px;
+    .gallery-track {
+        gap: 1.5rem;
+    }
 }
 
 /* Modal Styles - Aesthetic Redesign */

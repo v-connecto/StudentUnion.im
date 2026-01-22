@@ -360,83 +360,10 @@
     }
 
     // ============================================
-    // Gallery Carousel Handler
+    // Gallery Carousel - Seamless Infinite Scroll (CSS Animation)
     // ============================================
-    const galleryTrack = document.getElementById('gallery-track');
-    const galleryPrev = document.getElementById('gallery-prev');
-    const galleryNext = document.getElementById('gallery-next');
-    const galleryIndicators = document.querySelectorAll('.indicator');
-
-    if (galleryTrack && galleryPrev && galleryNext) {
-        let currentSlide = 0;
-        const totalSlides = document.querySelectorAll('.gallery-item').length;
-
-        function updateGallery() {
-            const offset = -currentSlide * 100;
-            galleryTrack.style.transform = `translateX(${offset}%)`;
-
-            // Update indicators
-            galleryIndicators.forEach((indicator, index) => {
-                if (index === currentSlide) {
-                    indicator.classList.add('active');
-                } else {
-                    indicator.classList.remove('active');
-                }
-            });
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            updateGallery();
-        }
-
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            updateGallery();
-        }
-
-        function goToSlide(index) {
-            currentSlide = index;
-            updateGallery();
-        }
-
-        // Event listeners
-        galleryNext.addEventListener('click', nextSlide);
-        galleryPrev.addEventListener('click', prevSlide);
-
-        // Indicator click handlers
-        galleryIndicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => goToSlide(index));
-        });
-
-        // Auto-advance every 5 seconds
-        let autoAdvance = setInterval(nextSlide, 5000);
-
-        // Pause auto-advance on hover
-        const galleryCarousel = document.getElementById('gallery-carousel');
-        if (galleryCarousel) {
-            galleryCarousel.addEventListener('mouseenter', () => {
-                clearInterval(autoAdvance);
-            });
-
-            galleryCarousel.addEventListener('mouseleave', () => {
-                autoAdvance = setInterval(nextSlide, 5000);
-            });
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-                clearInterval(autoAdvance);
-                autoAdvance = setInterval(nextSlide, 5000);
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-                clearInterval(autoAdvance);
-                autoAdvance = setInterval(nextSlide, 5000);
-            }
-        });
-    }
+    // No JavaScript needed - using pure CSS animation
+    // Pause on hover is handled by CSS :hover pseudo-class
 
     // ============================================
     // Waitlist Modal Handler
@@ -537,20 +464,26 @@
             const originalText = submitButton.textContent;
             submitButton.textContent = 'Submitting...';
 
-            // Prepare form data
-            const formData = {
-                email: email,
-                userType: userType,
-                additionalInfo: additionalInfo,
-                timestamp: new Date().toISOString()
-            };
+            // Google Forms integration
+            // Replace FORM_ID with your actual Google Form ID
+            // Replace entry IDs with your actual form field IDs
+            const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/FORM_ID_PLACEHOLDER/formResponse';
 
-            // TODO: Replace with actual backend API call
-            // Example: fetch('/api/waitlist', { method: 'POST', body: JSON.stringify(formData) })
+            // Create form data for Google Forms
+            const formData = new FormData();
+            formData.append('entry.EMAIL_ENTRY_ID_PLACEHOLDER', email); // Email field
+            formData.append('entry.USERTYPE_ENTRY_ID_PLACEHOLDER', userType); // User type (student/business)
+            if (additionalInfo) {
+                formData.append('entry.ADDITIONAL_INFO_ENTRY_ID_PLACEHOLDER', additionalInfo); // Optional info
+            }
 
-            // Simulate API call
-            setTimeout(function() {
-                // Success
+            // Submit to Google Forms
+            fetch(GOOGLE_FORM_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Required for Google Forms
+                body: formData
+            }).then(function() {
+                // Success (no-cors means we can't read response, but submission works)
                 showModalMessage('🎉 You\'re on the list! We\'ll notify you when we relaunch.', 'success');
 
                 // Reset form
@@ -558,7 +491,7 @@
                 submitButton.disabled = false;
                 submitButton.textContent = originalText;
 
-                // Optional: Send to analytics
+                // Send to analytics
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'waitlist_signup', {
                         'event_category': 'engagement',
@@ -567,11 +500,17 @@
                     });
                 }
 
-                console.log('Waitlist submission:', formData);
+                console.log('Waitlist submitted to Google Forms');
 
                 // Close modal after 2 seconds
                 setTimeout(closeModal, 2000);
-            }, 1000);
+            }).catch(function(error) {
+                // Error handling
+                console.error('Form submission error:', error);
+                showModalMessage('Something went wrong. Please try again.', 'error');
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            });
         });
     }
 
