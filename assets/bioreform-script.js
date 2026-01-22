@@ -360,10 +360,23 @@
     }
 
     // ============================================
-    // Gallery Carousel - Seamless Infinite Scroll (CSS Animation)
+    // Media Carousel (Infinite Scroll)
     // ============================================
-    // No JavaScript needed - using pure CSS animation
-    // Pause on hover is handled by CSS :hover pseudo-class
+    // The CSS animation handles the scrolling,
+    // but we can add pause on hover functionality
+    const mediaCarousel = document.getElementById('media-carousel');
+
+    if (mediaCarousel) {
+        const mediaTrack = mediaCarousel.querySelector('.media-track');
+
+        mediaCarousel.addEventListener('mouseenter', function() {
+            mediaTrack.style.animationPlayState = 'paused';
+        });
+
+        mediaCarousel.addEventListener('mouseleave', function() {
+            mediaTrack.style.animationPlayState = 'running';
+        });
+    }
 
     // ============================================
     // Waitlist Modal Handler
